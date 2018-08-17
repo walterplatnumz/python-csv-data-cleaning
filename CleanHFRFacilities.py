@@ -5,17 +5,18 @@ from os import path
 class CleanHFRFacilities:
 	
 	mheaders = []
+	filetoread = ""
+	recordrows = 0
 	
-	def __init__(self):
-		pass
+	def __init__(self, filename):
+		self.filetoread = filename
 		
-	def openFile(self, filename_path):
-		return filename_path;
+	def openFile(self):
+		return self.filetoread;
 		
-	def getHeaders(self, filename_path):
+	def getHeaders(self):
 		localheaders = []
-		filename = self.openFile(filename_path)
-		with open('./' + filename_path, 'r') as filetoread:
+		with open('./' + self.filetoread, 'r') as filetoread:
 			headers = csv.DictReader(filetoread)
 			headersJSONData = next(headers)
 			
@@ -27,9 +28,16 @@ class CleanHFRFacilities:
 		for i in len(localheaders):
 			self.mheaders[i] = localheaders[i]
 		return true
+	
+	def getRecordsData(self):
+		pass
+		
+#HFRInstance = CleanHFRFacilities()
+#HFRInstance.mheaders = HFRInstance.getHeaders(self.filetoread)
+#print(HFRInstance.mheaders)
 
+HFRInstance = CleanHFRFacilities('cainam.csv')
+HFRInstance.mheaders = HFRInstance.getHeaders()
+print(HFRInstance.filetoread)
 
-HFRInstance = CleanHFRFacilities()
-HFRInstance.mheaders = HFRInstance.getHeaders('cainam.csv')
-print(HFRInstance.mheaders)
 
