@@ -4,7 +4,7 @@ from os import path
 
 class CleanHFRFacilities:
 	
-	headers = []
+	mheaders = []
 	
 	def __init__(self):
 		pass
@@ -22,10 +22,14 @@ class CleanHFRFacilities:
 			for key in headersJSONData.keys():
 				localheaders.append(key)
 		return localheaders
-	
-	def ConcatenateNames(self, first, last):
-		return self.first + " - " + self.last
+		
+	def setHeaders(self, localheaders):
+		for i in len(localheaders):
+			self.mheaders[i] = localheaders[i]
+		return true
 
 
 HFRInstance = CleanHFRFacilities()
-print(HFRInstance.getHeaders('cainam.csv'))
+HFRInstance.mheaders = HFRInstance.getHeaders('cainam.csv')
+print(HFRInstance.mheaders)
+
