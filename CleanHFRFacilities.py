@@ -11,17 +11,19 @@ class CleanHFRFacilities:
     fileToRead = ""
     fileToWrite = "output.csv"
     totalrec = 0;
-    tmpArrayForData = []
+    allDATA = []
 
-    headerConfigurations = {"Ownership": "jumbo", "name": "Malaya", "Usenge": "lat"}
+    headerConfigurations = {"resmap-id": "jumbo", "lat": "Walter", "name": "Usenge"}
 
     def __init__(self, filename_path):
         self.fileToRead = filename_path
         self.totalrec = self.getTotalRecords()
         self.mHeaders = self.getHeaderFromFile()
+
+
         self.mNewHeaders = self.cleaningHeaderName()
         # self.writeIntoNewFile()
-        self.tmpArrayForData = self.getAllRecords()
+        self.getAllRecords()
 
     def getHeaderFromFile(self):
         localheaders = []
@@ -36,13 +38,21 @@ class CleanHFRFacilities:
 
     def cleaningHeaderName(self):
         localnewheaders = []
+
         for key, value in self.headerConfigurations.iteritems():
             for i in range(len(self.mHeaders)):
                 if(key == self.mHeaders[i]):
-                    localnewheaders.append(value)
+                    if key in self.mNewHeaders:
+                        pass
+                    else:
+                        localnewheaders.append(value)
                 else:
-                    localnewheaders.append(self.mHeaders[i])
-
+                    if self.mHeaders[i] in self.mNewHeaders:
+                        pass
+                    else:
+                        localnewheaders.append(self.mHeaders[i])
+                # print key + " - " + self.mHeaders[i]
+                    # localnewheaders.append(self.mHeaders[i])
         return localnewheaders
 
     def writeIntoNewFile(self):
@@ -50,7 +60,7 @@ class CleanHFRFacilities:
             writerOBJ = csv.DictWriter(filetowrite, fieldnames=self.mNewHeaders)
             writerOBJ = csv.writer(filetowrite)
             writerOBJ.writerow(self.mNewHeaders)
-            # writerOBJ.writerow(newrow)
+            writerOBJ.writerows(self.allDATA)
 
     def printJSON(self, listofitems):
         return json.dumps(listofitems, indent=4, sort_keys=True)
@@ -60,22 +70,13 @@ class CleanHFRFacilities:
         with open('./' + self.fileToRead, 'r') as filedatatoread:
             records = csv.DictReader(filedatatoread)
 
-            with open('./' + self.fileToWrite, 'w') as filetowrite:
-                writerOBJ = csv.DictWriter(filetowrite, fieldnames=self.mNewHeaders)
-                writerOBJ = csv.writer(filetowrite)
-                writerOBJ.writerow(self.mNewHeaders)
-
             for rowData in records:
                 localrecord = []
                 for i in range(len(self.mHeaders)):
-                    # print self.printJSON(rowData[self.mHeaders[i]])
-                    # self.tmpArrayForData.append(rowData[self.mHeaders[i]])
                     localrecord.append(rowData[self.mHeaders[i]])
-
-                # print localrecord
-
-                writerOBJ.writerow(localrecord)
-                # self.writeIntoNewFile(localrecord)
+                    # self.writeIntoNewFile(localrecord)
+                self.allDATA.append(localrecord)
+        self.writeIntoNewFile()
 
     def getTotalRecords(self):
         with open('./' + self.fileToRead, 'r') as filedatatoread:
@@ -89,5 +90,10 @@ class CleanHFRFacilities:
 
 
 objInstance = CleanHFRFacilities('cainam.csv')
-print objInstance.tmpArrayForData
+print len(objInstance.mNewHeaders)
+print len(objInstance.mHeaders)
+# print objInstance.printJSON(objInstance.cleaningHeaderName())
+
+
+
 
