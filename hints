@@ -1,0 +1,51 @@
+CleanHFRFacilities
+
+	- headers []
+	- records [][]
+
+	- headerReplacementConfigurations 
+		{
+			"Fac_Type-1": "Facility Type",
+			"Fac_Type-2": "Facility Type - Detailed",
+			"Ownership-2": "Ownership - Detailed",
+			"Ownership-3": "Ownership - Detailed - Further"
+		}
+		
+	- recordReplacementConfigurations
+		{
+			"Ownership": 
+				{
+					"Publ":"Public",
+					"LGA":"Public",
+					"milti": "military"
+				}
+		}
+	- defaultsForBlankHeaders
+		{
+			"Fac_Type-1": "Dispensary",
+			"
+		}
+	- cleaningOperations
+		 [	CleanHeaderNames
+			CleanRecordNames
+			CleanBlanksForLevel1
+			ConcateNamesForLevel2AndHigher
+			DefaultValuesForEmptyOnLevel2AndHigher
+		]
+	
+	- getHeadersAndRows()
+		* get first row and place into headers and the rest into records
+	- cleanHeaderNames()
+		* replace header with new labels as per headerReplacementConfigurations
+	- cleanRecordNames()
+		* replacerecord values with new values as per recordReplacementConfigurations
+	- cleanBlanksForLevel1()
+		* 
+	- ConcateNamesForLevel2AndHigher()
+	- DefaultValuesForEmptyOnLevel2AndHigher()
+	
+	- Constructor()
+		loopThrough cleaning operations array, and invoke them
+		- getHeaders()
+		- cleanHeaderNames()
+		- cleanRecordNames()
