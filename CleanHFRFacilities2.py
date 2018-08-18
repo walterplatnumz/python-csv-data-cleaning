@@ -80,3 +80,30 @@
 # # print(HFRInstance.getRecordsSingleRowData())
 # # print(HFRInstance.filetoread)
 # # print("key: {} | value: {}".format(key, value))
+
+
+# if os.path.exists(self.fileToWrite):
+#     with open('./' + self.fileToWrite, 'r') as fileheaderstoread:
+#         headers = csv.DictReader(fileheaderstoread)
+#         headerJSON = headers.fieldnames
+#         if not headerJSON:
+#             if os.path.exists(self.fileToRead):
+#                 with open('./' + self.fileToRead, 'r') as fileheaderstoread:
+#                     headers = csv.DictReader(fileheaderstoread)
+#                     headerJSON = headers.fieldnames
+#                     localheaders = headerJSON
+#         else:
+#             localheaders = headerJSON
+# else:
+#     if os.path.exists(self.fileToRead):
+#         with open('./' + self.fileToRead, 'r') as fileheaderstoread:
+#             headers = csv.DictReader(fileheaderstoread)
+#             headerJSON = headers.fieldnames
+#             if not headerJSON:
+#                 print "File has no headers/titles"
+#             else:
+#                 if os.path.exists(self.fileToRead):
+#                     with open('./' + self.fileToRead, 'r') as fileheaderstoread:
+#                         headers = csv.DictReader(fileheaderstoread)
+#                         headerJSON = headers.fieldnames
+#                         localheaders = headerJSON
