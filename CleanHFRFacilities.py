@@ -1,4 +1,5 @@
 import csv
+import pandas
 import os.path
 import itertools
 import json
@@ -13,28 +14,50 @@ class CleanHFRFacilities:
     totalrec = 0;
     allDATA = []
 
-    headerConfigurations = {"resmap-id": "jumbo", "lat": "Walter", "name": "Usenge"}
+    headerConfigurations = {"resmap-id": "walter", "lat": "Melanie"}
 
     def __init__(self, filename_path):
         self.fileToRead = filename_path
         self.totalrec = self.getTotalRecords()
         self.mHeaders = self.getHeaderFromFile()
-
-
         self.mNewHeaders = self.cleaningHeaderName()
         # self.writeIntoNewFile()
         self.getAllRecords()
 
     def getHeaderFromFile(self):
         localheaders = []
-        if os.path.exists(self.fileToRead):
-            with open('./' + self.fileToRead, 'r') as fileheaderstoread:
+        if os.path.exists(self.fileToWrite):
+            with open('./' + self.fileToWrite, 'r') as fileheaderstoread:
                 headers = csv.DictReader(fileheaderstoread)
                 headerJSON = headers.fieldnames
-                localheaders = headerJSON
-                return localheaders
+                if not headerJSON:
+                    if os.path.exists(self.fileToRead):
+                        with open('./' + self.fileToRead, 'r') as fileheaderstoread:
+                            headers = csv.DictReader(fileheaderstoread)
+                            headerJSON = headers.fieldnames
+                            localheaders = headerJSON
+                            return localheaders
+                else:
+                    localheaders = headerJSON
+                    return localheaders
         else:
-            print "File doesn't exist, please check the file again"
+            if os.path.exists(self.fileToRead):
+                with open('./' + self.fileToRead, 'r') as fileheaderstoread:
+                    headers = csv.DictReader(fileheaderstoread)
+                    headerJSON = headers.fieldnames
+                    if not headerJSON:
+                        print "File has no headers/titles"
+                    else:
+                        if os.path.exists(self.fileToRead):
+                            with open('./' + self.fileToRead, 'r') as fileheaderstoread:
+                                headers = csv.DictReader(fileheaderstoread)
+                                headerJSON = headers.fieldnames
+                                localheaders = headerJSON
+                                return localheaders
+    def deleteDataInList(self, index):
+        for i in range(len(self.mNewHeaders)):
+            del self.mNewHeaders[i]
+
 
     def cleaningHeaderName(self):
         localnewheaders = []
@@ -42,24 +65,17 @@ class CleanHFRFacilities:
         for key, value in self.headerConfigurations.iteritems():
             for i in range(len(self.mHeaders)):
                 if(key == self.mHeaders[i]):
-                    if key in self.mNewHeaders:
-                        pass
-                    else:
-                        localnewheaders.append(value)
+                    localnewheaders.append(value)
                 else:
-                    if self.mHeaders[i] in self.mNewHeaders:
-                        pass
-                    else:
-                        localnewheaders.append(self.mHeaders[i])
-                # print key + " - " + self.mHeaders[i]
-                    # localnewheaders.append(self.mHeaders[i])
+                    localnewheaders.append(self.mHeaders[i])
+
+
         return localnewheaders
 
     def writeIntoNewFile(self):
         with open('./' + self.fileToWrite, 'w') as filetowrite:
-            writerOBJ = csv.DictWriter(filetowrite, fieldnames=self.mNewHeaders)
             writerOBJ = csv.writer(filetowrite)
-            writerOBJ.writerow(self.mNewHeaders)
+            writerOBJ.writerow(self.mHeaders)
             writerOBJ.writerows(self.allDATA)
 
     def printJSON(self, listofitems):
@@ -90,8 +106,11 @@ class CleanHFRFacilities:
 
 
 objInstance = CleanHFRFacilities('cainam.csv')
+print objInstance.printJSON(objInstance.mNewHeaders)
 print len(objInstance.mNewHeaders)
-print len(objInstance.mHeaders)
+
+# print objInstance.printJSON(objInstance.mHeaders)
+# print objInstance.printJSON(objInstance.getHeaderFromFile())
 # print objInstance.printJSON(objInstance.cleaningHeaderName())
 
 
